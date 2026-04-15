@@ -1,21 +1,23 @@
 ﻿using BCrypt.Net;
 using TaskManagement.Application.DTOs;
 using TaskManagement.Application.Exceptions;
-//using TaskManagement.Domain.Entities;
 using TaskManagement.Application.Interfaces.Repositories;
+using TaskManagement.Application.Interfaces.Security;
 
 namespace TaskManagement.Application.Services
 {
     public class LoginUserService
     {
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly IUserRepository _userRepository;
 
-        public LoginUserService(IUserRepository userRepository)
+        public LoginUserService(IUserRepository userRepository, IJwtTokenService jwtTokenService)
         {
+            _jwtTokenService = jwtTokenService;
             _userRepository = userRepository;
         }
 
-        public async Task LoginAsync(LoginUserDto dto)
+        public async Task<string> LoginAsync(LoginUserDto dto)
         {
             var user =  await _userRepository.GetByEmailAsync(dto.Email);
 
@@ -27,7 +29,7 @@ namespace TaskManagement.Application.Services
                 throw new InvalidCredentialsException();
             }
 
-            return;
+            return _jwtTokenService.CreateToken(user);
         }
     }
 }

@@ -10,11 +10,13 @@ namespace TaskManagement.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly RegisterUserService _registerUserService;
+    private readonly LoginUserService _loginUserService;
     private readonly ILogger<AuthController> _logger;
 
-    public AuthController(RegisterUserService registerUserService, ILogger<AuthController> logger)
+    public AuthController(RegisterUserService registerUserService, LoginUserService loginUserService, ILogger<AuthController> logger)
     {
         _registerUserService = registerUserService;
+        _loginUserService = loginUserService;
         _logger = logger;
     }
 
@@ -27,6 +29,18 @@ public class AuthController : ControllerBase
 
         _logger.LogInformation("User registered successfully: {Email}", dto.Email);
 
-        return Ok(new ApiResponse<object>(true,"User registered successfully"));
+        return Ok(new ApiResponse<object>(true, "User registered successfully"));
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginUserDto dto)
+    {
+        _logger.LogInformation("Login attempt for {Email}", dto.Email);
+
+        var token = await _loginUserService.LoginAsync(dto);
+
+        _logger.LogInformation("Login successful for {Email}", dto.Email);
+
+        return Ok(new ApiResponse<object>(true, "Login successful", new { token }));
     }
 }

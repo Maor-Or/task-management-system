@@ -7,6 +7,8 @@ using TaskManagement.Api.Middleware;
 using TaskManagement.Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using TaskManagement.Application.Interfaces.Security;
+using TaskManagement.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<RegisterUserService>();
+builder.Services.AddScoped<LoginUserService>();
 //builder.Services.AddFluentValidation(); - deprecated
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters(); // Enables automatic validation using FluentValidation.
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>(); // Scan project and register validator classes.
