@@ -2,6 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using TaskManagement.Infrastructure.Persistence;
 using TaskManagement.Application.Interfaces.Repositories;
 using TaskManagement.Infrastructure.Repositories;
+using TaskManagement.Application.Services;
+using TaskManagement.Api.Middleware;
+using TaskManagement.Application.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +24,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<RegisterUserService>();
+//builder.Services.AddFluentValidation(); - deprecated
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters(); // Enables automatic validation using FluentValidation.
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>(); // Scan project and register validator classes.
 
 var app = builder.Build();
 
@@ -32,6 +41,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
