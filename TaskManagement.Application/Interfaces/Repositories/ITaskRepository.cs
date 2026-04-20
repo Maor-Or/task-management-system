@@ -9,5 +9,9 @@ namespace TaskManagement.Application.Interfaces.Repositories
         Task AddAsync(TaskItem item);
         Task UpdateAsync(TaskItem item);
         Task DeleteAsync(TaskItem item);
+        Task<(List<TaskItem> items, int totalCount)> GetPagedbyUserIdAsync(
+            Guid userId,
+            int page,
+            int pageSize);
     }
 }

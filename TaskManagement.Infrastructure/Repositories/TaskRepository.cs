@@ -35,12 +35,23 @@ namespace TaskManagement.Infrastructure.Repositories
             return await _context.Tasks.Where(x => x.UserId == userId).ToListAsync();
         }
 
- 
-
         public async Task UpdateAsync(TaskItem item)
         {
             _context.Tasks.Update(item);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<(List<TaskItem> items, int totalCount)> GetPagedbyUserIdAsync(Guid userId, int page, int pageSize)
+        {
+            var query = _context.Tasks.Where(t => t.UserId == userId);
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
     }
 }

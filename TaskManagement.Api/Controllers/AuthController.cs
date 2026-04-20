@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using TaskManagement.Application.DTOs;
 using TaskManagement.Application.Services;
 using TaskManagement.Application.Common;
@@ -20,6 +22,7 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterUserDto dto)
     {
@@ -32,6 +35,7 @@ public class AuthController : ControllerBase
         return Ok(new ApiResponse<object>(true, "User registered successfully"));
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserDto dto)
     {
@@ -41,6 +45,17 @@ public class AuthController : ControllerBase
 
         _logger.LogInformation("Login successful for {Email}", dto.Email);
 
-        return Ok(new ApiResponse<object>(true, "Login successful", new { token }));
+        return Ok(new ApiResponse<LoginResponseDto>(true, "Login successful", new LoginResponseDto { Token = token }));
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult GetCurrentUser()
+    {
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        var email = User.FindFirstValue(ClaimTypes.Email);
+
+        return Ok(new ApiResponse<UserDto>(true, "user retrived", new UserDto {UserId = userId, Email = email}));
     }
 }
