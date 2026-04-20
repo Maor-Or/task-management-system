@@ -12,6 +12,9 @@ namespace TaskManagement.Application.Interfaces.Repositories
         Task<(List<TaskItem> items, int totalCount)> GetPagedbyUserIdAsync(
             Guid userId,
             int page,
-            int pageSize);
+            int pageSize,
+            bool? isCompleted,
+            int? priority,
+            string? sortBy);
     }
 }

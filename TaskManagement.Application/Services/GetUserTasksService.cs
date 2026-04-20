@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using TaskManagement.Application.DTOs;
 using TaskManagement.Application.Interfaces.Repositories;
+using TaskManagement.Domain.Enums;
 
 namespace TaskManagement.Application.Services
 {
@@ -32,9 +34,12 @@ namespace TaskManagement.Application.Services
         public async Task<PagedResult<TaskDto>> GetPagedAsync(
             Guid userId,
             int page,
-            int pageSize)
+            int pageSize,
+            bool? isCompleted,
+            int? priority,
+            string? sortBy)
         {
-            var (items, totalCount) = await _taskRepository.GetPagedbyUserIdAsync(userId, page, pageSize);
+            var (items, totalCount) = await _taskRepository.GetPagedbyUserIdAsync(userId, page, pageSize, isCompleted, priority, sortBy);
 
             return new PagedResult<TaskDto>
             {

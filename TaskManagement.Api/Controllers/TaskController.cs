@@ -49,11 +49,21 @@ public class TaskController : ControllerBase
     [HttpGet("my")]
     public async Task<IActionResult> GetMyTasks(
         int page = 1,
-        int pageSize = 10)
+        int pageSize = 10,
+        bool? isCompleted = null,
+        int? priority = null,
+        string? sortBy = null,
+        bool? joker = null)
     {
+        // Easter Egg
+        if (joker != null && joker == true)
+        {
+            return Ok("jokey jokey joke");
+        }
+
         var userId = _currentUserService.GetUserId();
 
-        var result = await _getUserTasksService.GetPagedAsync(userId, page, pageSize);
+        var result = await _getUserTasksService.GetPagedAsync(userId, page, pageSize, isCompleted, priority, sortBy);
 
         return Ok(
             new ApiResponse<PagedResult<TaskDto>>(
