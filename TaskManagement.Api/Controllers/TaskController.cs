@@ -11,6 +11,7 @@ namespace TaskManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/tasks")]
+[Tags("Tasks")]
 [Authorize]
 public class TaskController : ControllerBase
 {

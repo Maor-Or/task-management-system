@@ -9,6 +9,7 @@ namespace TaskManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
+[Tags("Authentication")]
 public class AuthController : ControllerBase
 {
     private readonly RegisterUserService _registerUserService;

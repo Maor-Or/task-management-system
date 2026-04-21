@@ -1,4 +1,5 @@
 ﻿using BCrypt.Net;
+using Microsoft.Extensions.Logging;
 using TaskManagement.Application.DTOs;
 using TaskManagement.Application.Exceptions;
 using TaskManagement.Application.Interfaces.Repositories;
@@ -10,15 +11,18 @@ namespace TaskManagement.Application.Services
     {
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<LoginUserService> _logger;
 
-        public LoginUserService(IUserRepository userRepository, IJwtTokenService jwtTokenService)
+        public LoginUserService(IUserRepository userRepository, IJwtTokenService jwtTokenService, ILogger<LoginUserService> logger)
         {
             _jwtTokenService = jwtTokenService;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task<string> LoginAsync(LoginUserDto dto)
         {
+            _logger.LogInformation("Logging in user with Email: {Email}", dto.Email);
             var user =  await _userRepository.GetByEmailAsync(dto.Email);
 
             bool invalidCredentials = user == null 
@@ -26,8 +30,10 @@ namespace TaskManagement.Application.Services
 
             if (invalidCredentials)
             {
+                _logger.LogWarning("invalid login attempt for Email: {Email}", dto.Email);
                 throw new InvalidCredentialsException();
             }
+            _logger.LogInformation("Login successful for userId: {userId}", user.Id);
 
             return _jwtTokenService.CreateToken(user);
         }
