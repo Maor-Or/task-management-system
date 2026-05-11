@@ -10,14 +10,17 @@ const CreateTaskForm = ({ onTaskCreated }: Props) => {
 
     const [description, setDescription] = useState("");
 
-    const [dueDate, setDueDate] = useState("");
+    const today = new Date().toISOString().split("T")[0];
+    const [dueDate, setDueDate] = useState(today);
 
     const [priority, setPriority] = useState(1);
     
     const [error, setError] = useState("");
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError("");
 
         try {
             await createTask({
@@ -29,7 +32,7 @@ const CreateTaskForm = ({ onTaskCreated }: Props) => {
             
             setTitle("");
             setDescription("");
-            setDueDate("");
+            setDueDate(today);
             setPriority(1);
             
             onTaskCreated();
@@ -37,7 +40,7 @@ const CreateTaskForm = ({ onTaskCreated }: Props) => {
             setError("Failed to create task");
         }
     };
-    
+
     return (
         <form onSubmit={handleSubmit}>
             <h3>Create task</h3>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTasks } from "../api/tasks.api";
+import { getTasks, completeTask, deleteTask } from "../api/tasks.api";
 import type { Task } from "../types/task.types";
 import CreateTaskForm from "../components/CreateTaskForm";
 
@@ -25,7 +25,24 @@ const TasksPage = () => {
     useEffect(() => {
         fetchTasks();
     }, []);
-        
+      
+    const handleDeleteTask = async (taskId: string) => {
+        try {
+            await deleteTask(taskId);
+            fetchTasks();
+        } catch {
+            alert("Failed to delete task");
+        }
+    };
+
+    const handleCompleteTask = async (taskId: string) => {
+        try {
+            await completeTask(taskId);
+            fetchTasks();
+        } catch {
+            alert("Failed to complete task");
+        }
+    };
     
     if (loading) {
         return <p>Loading...</p>;
@@ -44,7 +61,19 @@ const TasksPage = () => {
                         <h3>{task.title}</h3>
                         <p>{task.description}</p>
                         <p>Priority: {task.priority}</p>
-                        <p>Completed: {task.isCompleted ? "Yes":"No"}</p>
+                        <p>Completed: {task.isCompleted ? "Yes" : "No"}</p>
+                        
+                        {!task.isCompleted && (
+                            <button onClick={() => handleCompleteTask(task.id)}>
+                            Complete
+                            </button>
+                        )}
+                        <br />
+                        
+                        <button onClick={() => handleDeleteTask(task.id)}>
+                            Delete
+                        </button>
+
                     </div>
                 )
             )}

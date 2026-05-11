@@ -16,3 +16,11 @@ export const createTask = async (task: CreateTaskRequest) => {
         await axios.post("/tasks", task);
     return response.data;
 };
+
+export const completeTask = async (taskId: string) => {
+    await axios.patch(`/tasks/${taskId}/complete`);
+};
+
+export const deleteTask = async (taskId: string) => {
+    await axios.delete(`/tasks/${taskId}`);
+}
