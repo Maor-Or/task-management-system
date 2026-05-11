@@ -75,15 +75,9 @@ const CreateTaskForm = ({ onTaskCreated }: Props) => {
                 value={priority}
                 onChange={(e) => setPriority(Number(e.target.value))}
             >
-                <option value={1}>
-                    Low
-                </option>
-                <option value={2}>
-                    Medium
-                </option>
-                <option value={3}>
-                    High
-                </option>
+                <option value={1}>Low</option>
+                <option value={2}>Medium</option>
+                <option value={3}>High</option>
             </select>
             <br />
 

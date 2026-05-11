@@ -1,13 +1,21 @@
 import axios from "../../../api/axios";
 import type { Task, PaginatedResponse, ApiResponse, CreateTaskRequest } from "../types/task.types";
 
-export const getTasks = async () => {
+export const getTasks = async (
+    page: number,
+    pageSize: number,
+    priority?: number | null
+) => {
     const response =
         await axios.get<
             ApiResponse<
                 PaginatedResponse<Task>
             >
-        >("/tasks");
+            >(
+                `/tasks?page=${page}&pageSize=${pageSize}`
+                + (priority ? `&priority=${priority}` : "")
+        );
+    
     return response.data.data;
 };
 
