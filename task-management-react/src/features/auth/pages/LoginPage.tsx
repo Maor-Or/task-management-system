@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { loginUser } from "../api/auth.api";
 import { setToken } from "../../../utils/token";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 
@@ -12,11 +14,15 @@ const LoginPage = () => {
 
   const [error, setError] =
     useState("");
+  
+  const navigate = useNavigate();
 
   const handleSubmit =
     async (e: React.SyntheticEvent) => {
 
       e.preventDefault();
+
+      setError("")
 
       try {
 
@@ -30,19 +36,34 @@ const LoginPage = () => {
 
         alert("Login successful");
 
+        navigate("/tasks", {replace: true});
+
       } catch (err: any) {
             console.log("LOGIN ERROR:", err);
             setError(err?.response?.data?.message || "Login failed");
-        }
+      }
     };
 
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleToggle = async () => {
+    setIsVisible(prev => !prev);
+  }
+  
   return (
     <div>
 
       <h2>Login</h2>
 
-      <p> Test login user credentials: Email: test@mail. Password: Test1234</p>
-
+      <div style = {{display: "flex", alignItems: "center", gap: "10px"}}>
+      {isVisible && (
+        <p> Test login user credentials: Email: test@mail. Password: Test1234</p>
+      )}
+      <button onClick={handleToggle}>
+        {isVisible ? "hide" : "show"}
+      </button>
+      </div>
+      
       <form onSubmit={handleSubmit}>
 
         <input
@@ -72,6 +93,10 @@ const LoginPage = () => {
         )}
 
       </form>
+      <h3>Don't have an account yet?</h3>
+      <Link to="/register">
+        Register
+      </Link>
 
     </div>
   );
