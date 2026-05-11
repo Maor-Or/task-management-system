@@ -57,6 +57,6 @@ public class AuthController : ControllerBase
 
         var email = User.FindFirstValue(ClaimTypes.Email);
 
-        return Ok(new ApiResponse<UserDto>(true, "user retrived", new UserDto {UserId = userId, Email = email}));
+        return Ok(new ApiResponse<UserDto>(true, "user retrieved", new UserDto {UserId = userId, Email = email}));
     }
 }

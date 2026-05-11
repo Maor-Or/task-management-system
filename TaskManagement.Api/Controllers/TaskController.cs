@@ -47,7 +47,7 @@ public class TaskController : ControllerBase
         return Ok(new ApiResponse<TaskDto> (true, "Task created successfully", result));
     }
 
-    [HttpGet("my")]
+    [HttpGet]
     public async Task<IActionResult> GetMyTasks(
         int page = 1,
         int pageSize = 10,
