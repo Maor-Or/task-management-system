@@ -1,29 +1,31 @@
 import { useEffect, useState } from "react";
 import { getTasks } from "../api/tasks.api";
 import type { Task } from "../types/task.types";
+import CreateTaskForm from "../components/CreateTaskForm";
+
 
 const TasksPage = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    useEffect(
-        () => {
-            const fetchTasks = async () => {
-                try {
-                    const response = await getTasks();
-                    setTasks(response.items);
-                } catch {
-                    setError(
-                        "Failed to load tasks"
-                    );
-                } finally {
-                    setLoading(false);
-                }
-            };
+    const fetchTasks = async () => {
+        try {
+            const response = await getTasks();
+            setTasks(response.items);
+        } catch {
+            setError(
+                "Failed to load tasks"
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
-            fetchTasks();
-        }, []);
+    useEffect(() => {
+        fetchTasks();
+    }, []);
+        
     
     if (loading) {
         return <p>Loading...</p>;
@@ -34,6 +36,7 @@ const TasksPage = () => {
 
     return (
         <div>
+        <CreateTaskForm onTaskCreated={fetchTasks} />
             <h2>Tasks</h2>
             {tasks.map(
                 (task) => (

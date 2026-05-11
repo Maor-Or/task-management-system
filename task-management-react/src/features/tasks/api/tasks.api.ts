@@ -1,5 +1,5 @@
 import axios from "../../../api/axios";
-import type { Task, PaginatedResponse, ApiResponse } from "../types/task.types";
+import type { Task, PaginatedResponse, ApiResponse, CreateTaskRequest } from "../types/task.types";
 
 export const getTasks = async () => {
     const response =
@@ -7,6 +7,12 @@ export const getTasks = async () => {
             ApiResponse<
                 PaginatedResponse<Task>
             >
-            >("/tasks");
+        >("/tasks");
     return response.data.data;
-}
+};
+
+export const createTask = async (task: CreateTaskRequest) => {
+    const response =
+        await axios.post("/tasks", task);
+    return response.data;
+};

@@ -19,3 +19,10 @@ export interface ApiResponse<T> {
     message: string;
     data: T;
 }
+
+export interface CreateTaskRequest {
+    title: string;
+    description: string;
+    dueDate: string;
+    priority: number;
+}
