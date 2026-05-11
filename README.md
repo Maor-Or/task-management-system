@@ -8,12 +8,12 @@ The project demonstrates modern full-stack architecture practices including JWT 
 
 # 📸 Screenshots
 
-## Login Page
+## Registration Page
 ![Login](https://github.com/user-attachments/assets/13e5d2be-006d-45cf-b13c-04835fdce8d9)
 
 ---
 
-## Registration Page
+## Login Page
 ![Register](https://github.com/user-attachments/assets/69315055-4440-47dc-8a11-1614140f21b9)
 
 ---
