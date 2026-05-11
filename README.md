@@ -74,8 +74,7 @@ The project demonstrates modern full-stack architecture practices including JWT 
 ---
 
 # 🏗️ Architecture
-
-```text
+```
 Frontend (React)
         ↓
 Feature Modules
@@ -92,7 +91,7 @@ Application Services
 Repositories
         ↓
 SQL Server Database
-
+```
 
 # 🛠️ Tech Stack
 
