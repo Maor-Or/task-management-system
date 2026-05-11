@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createTask } from "../api/tasks.api";
+import { toast } from "react-toastify";
 
 type Props = {
     onTaskCreated: () => void;
@@ -29,6 +30,8 @@ const CreateTaskForm = ({ onTaskCreated }: Props) => {
                 dueDate,
                 priority
             });
+
+            toast.success("Task created");
             
             setTitle("");
             setDescription("");
@@ -42,7 +45,7 @@ const CreateTaskForm = ({ onTaskCreated }: Props) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="create-task">
             <h3>Create task</h3>
             {error && <p>{error}</p>}
 

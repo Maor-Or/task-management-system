@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { getTasks, completeTask, deleteTask } from "../api/tasks.api";
 import type { Task } from "../types/task.types";
 import CreateTaskForm from "../components/CreateTaskForm";
-import { logout } from "../../auth/utils/logout";
+import Spinner from "../../../shared/components/Spinner";
+import { toast } from "react-toastify";
+import Navbar from "../../../shared/components/Navbar";
 
 
 const TasksPage = () => {
@@ -42,7 +44,7 @@ const TasksPage = () => {
             await deleteTask(taskId);
             fetchTasks();
         } catch {
-            alert("Failed to delete task");
+            toast.error("Failed to delete task");
         }
     };
 
@@ -51,12 +53,12 @@ const TasksPage = () => {
             await completeTask(taskId);
             fetchTasks();
         } catch {
-            alert("Failed to complete task");
+            toast.error("Failed to complete task");
         }
     };
     
     if (loading) {
-        return <div>Loading tasks...</div>;
+        return <Spinner />;
     }
     if (error) {
         return <p>{error}</p>;
@@ -64,7 +66,7 @@ const TasksPage = () => {
 
     return (
         <div>
-        <button onClick={logout} >Logout</button>
+            <Navbar />
         <CreateTaskForm onTaskCreated={fetchTasks} />
             <h2>Tasks</h2>
 
@@ -90,23 +92,28 @@ const TasksPage = () => {
 
             {tasks.map(
                 (task) => (
-                    <div key={task.id}>
+                    <div className="task-card">
                         <h3>{task.title}</h3>
                         <p>{task.description}</p>
-                        <p>Priority: {task.priority}</p>
-                        <p>Completed: {task.isCompleted ? "Yes" : "No"}</p>
+                        <div>
+                            Priority: {task.priority}
+                        </div>
+                        <div>Status: {task.isCompleted ? "Done" : "Open"}</div>
                         
-                        {!task.isCompleted && (
+                        <div className="actions">
+                        
+                            {!task.isCompleted && (
                             <button disabled={loading} onClick={() => handleCompleteTask(task.id)}>
-                            Complete
+                                Complete
                             </button>
-                        )}
-                        <br />
+                            )}
+                            <br />
                         
-                        <button disabled={loading} onClick={() => handleDeleteTask(task.id)}>
-                            Delete
-                        </button>
+                            <button disabled={loading} onClick={() => handleDeleteTask(task.id)}>
+                                Delete
+                            </button>
 
+                        </div>    
                     </div>
                 )
             )}

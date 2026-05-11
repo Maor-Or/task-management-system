@@ -109,3 +109,32 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+.spinner {
+  margin: 20px;
+  font-weight: bold;
+}
+.task-card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.create-task{
+    border: 1px solid #2d2668;
+  padding: 1px;
+  margin-bottom: 1px;
+  border-radius: 1px;
+}

@@ -12,7 +12,6 @@ const RegisterPage = () => {
         e.preventDefault();
         setError("")
         setSuccess("");
-        // alert("in submithandle");
         
         try {
             await registerUser({ email, password });

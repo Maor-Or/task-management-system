@@ -3,6 +3,7 @@ import { loginUser } from "../api/auth.api";
 import { setToken } from "../../../utils/token";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
 
@@ -34,7 +35,7 @@ const LoginPage = () => {
 
         setToken(token);
 
-        alert("Login successful");
+        toast.info("Login successful");
 
         navigate("/tasks", {replace: true});
 
